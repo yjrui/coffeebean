@@ -1,0 +1,593 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="mobilespyModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="mobilespyModelStoreContainer">
+          <EntitySet Name="mbs_callset" EntityType="mobilespyModel.Store.mbs_callset" store:Type="Tables" Schema="mobilespy" />
+          <EntitySet Name="mbs_contactpropertyset" EntityType="mobilespyModel.Store.mbs_contactpropertyset" store:Type="Tables" Schema="mobilespy" />
+          <EntitySet Name="mbs_contactset" EntityType="mobilespyModel.Store.mbs_contactset" store:Type="Tables" Schema="mobilespy" />
+          <EntitySet Name="mbs_deviceset" EntityType="mobilespyModel.Store.mbs_deviceset" store:Type="Tables" Schema="mobilespy" />
+          <EntitySet Name="mbs_filesystemset" EntityType="mobilespyModel.Store.mbs_filesystemset" store:Type="Tables" Schema="mobilespy" />
+          <EntitySet Name="mbs_sessionset" EntityType="mobilespyModel.Store.mbs_sessionset" store:Type="Tables" Schema="mobilespy" />
+          <EntitySet Name="mbs_smsset" EntityType="mobilespyModel.Store.mbs_smsset" store:Type="Tables" Schema="mobilespy" />
+          <AssociationSet Name="FK_MBS_ContactMBS_ContactProperty" Association="mobilespyModel.Store.FK_MBS_ContactMBS_ContactProperty">
+            <End Role="mbs_contactset" EntitySet="mbs_contactset" />
+            <End Role="mbs_contactpropertyset" EntitySet="mbs_contactpropertyset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_DeviceMBS_Session" Association="mobilespyModel.Store.FK_MBS_DeviceMBS_Session">
+            <End Role="mbs_deviceset" EntitySet="mbs_deviceset" />
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_Call" Association="mobilespyModel.Store.FK_MBS_SessionMBS_Call">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_callset" EntitySet="mbs_callset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_Contact" Association="mobilespyModel.Store.FK_MBS_SessionMBS_Contact">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_contactset" EntitySet="mbs_contactset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_FileSystem" Association="mobilespyModel.Store.FK_MBS_SessionMBS_FileSystem">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_filesystemset" EntitySet="mbs_filesystemset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_Session" Association="mobilespyModel.Store.FK_MBS_SessionMBS_Session">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_sessionset1" EntitySet="mbs_sessionset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_SMS" Association="mobilespyModel.Store.FK_MBS_SessionMBS_SMS">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_smsset" EntitySet="mbs_smsset" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="mbs_callset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="varchar" Nullable="false" />
+          <Property Name="Duration" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="StartTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="StopTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="MBS_SessionId" Type="bigint" Nullable="false" />
+          <Property Name="Class" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mbs_contactpropertyset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Property" Type="int" Nullable="false" />
+          <Property Name="Text" Type="varchar" />
+          <Property Name="Datetime" Type="datetime" />
+          <Property Name="Binary" Type="varbinary" />
+          <Property Name="MBS_ContactId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mbs_contactset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="varchar" />
+          <Property Name="MBS_SessionId" Type="bigint" Nullable="false" />
+          <Property Name="Class" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mbs_deviceset">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="char" Nullable="false" MaxLength="36" />
+          <Property Name="Type" Type="varchar" Nullable="false" />
+          <Property Name="Label" Type="varchar" />
+          <Property Name="Manufacturer" Type="varchar" />
+          <Property Name="Product" Type="varchar" />
+          <Property Name="ESN" Type="varchar" />
+          <Property Name="Lac" Type="bigint" />
+          <Property Name="Cid" Type="bigint" />
+          <Property Name="HWRevision" Type="varchar" />
+          <Property Name="IMEI" Type="varchar" />
+          <Property Name="Phone" Type="bigint" />
+          <Property Name="Platform" Type="varchar" />
+          <Property Name="ReturnedIMEI" Type="varchar" />
+          <Property Name="SWRevision" Type="varchar" />
+          <Property Name="IMSI" Type="varchar" />
+          <Property Name="ICCID" Type="varchar" />
+          <Property Name="LAI" Type="varchar" />
+          <Property Name="Phrase" Type="varchar" />
+        </EntityType>
+        <EntityType Name="mbs_filesystemset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MappingRootPath" Type="varchar" Nullable="false" />
+          <Property Name="MBS_SessionId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mbs_sessionset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="MBS_DeviceUID" Type="char" Nullable="false" MaxLength="36" />
+          <Property Name="ParentSessionId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="mbs_smsset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FromNumber" Type="varchar" />
+          <Property Name="ReceivedTimeStamp" Type="datetime" />
+          <Property Name="SentTimeStamp" Type="datetime" />
+          <Property Name="Head" Type="varchar" />
+          <Property Name="ReceivedTimeZone" Type="bigint" />
+          <Property Name="ServiceCenter" Type="varchar" />
+          <Property Name="State" Type="smallint" />
+          <Property Name="Status" Type="tinyint" />
+          <Property Name="Text" Type="varchar" />
+          <Property Name="ToNumber" Type="varchar" />
+          <Property Name="Type" Type="smallint" />
+          <Property Name="MBS_SessionId" Type="bigint" Nullable="false" />
+          <Property Name="Class" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_MBS_ContactMBS_ContactProperty">
+          <End Role="mbs_contactset" Type="mobilespyModel.Store.mbs_contactset" Multiplicity="1" />
+          <End Role="mbs_contactpropertyset" Type="mobilespyModel.Store.mbs_contactpropertyset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_contactset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_contactpropertyset">
+              <PropertyRef Name="MBS_ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_DeviceMBS_Session">
+          <End Role="mbs_deviceset" Type="mobilespyModel.Store.mbs_deviceset" Multiplicity="1" />
+          <End Role="mbs_sessionset" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_deviceset">
+              <PropertyRef Name="UID" />
+            </Principal>
+            <Dependent Role="mbs_sessionset">
+              <PropertyRef Name="MBS_DeviceUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_Call">
+          <End Role="mbs_sessionset" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_callset" Type="mobilespyModel.Store.mbs_callset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_callset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_Contact">
+          <End Role="mbs_sessionset" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_contactset" Type="mobilespyModel.Store.mbs_contactset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_contactset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_FileSystem">
+          <End Role="mbs_sessionset" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_filesystemset" Type="mobilespyModel.Store.mbs_filesystemset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_filesystemset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_Session">
+          <End Role="mbs_sessionset" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="0..1" />
+          <End Role="mbs_sessionset1" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_sessionset1">
+              <PropertyRef Name="ParentSessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_SMS">
+          <End Role="mbs_sessionset" Type="mobilespyModel.Store.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_smsset" Type="mobilespyModel.Store.mbs_smsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_smsset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mobilespyModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="mobilespyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="mbs_callset" EntityType="mobilespyModel.mbs_callset" />
+          <EntitySet Name="mbs_contactpropertyset" EntityType="mobilespyModel.mbs_contactpropertyset" />
+          <EntitySet Name="mbs_contactset" EntityType="mobilespyModel.mbs_contactset" />
+          <EntitySet Name="mbs_deviceset" EntityType="mobilespyModel.mbs_deviceset" />
+          <EntitySet Name="mbs_filesystemset" EntityType="mobilespyModel.mbs_filesystemset" />
+          <EntitySet Name="mbs_sessionset" EntityType="mobilespyModel.mbs_sessionset" />
+          <EntitySet Name="mbs_smsset" EntityType="mobilespyModel.mbs_smsset" />
+          <AssociationSet Name="FK_MBS_SessionMBS_Call" Association="mobilespyModel.FK_MBS_SessionMBS_Call">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_callset" EntitySet="mbs_callset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_ContactMBS_ContactProperty" Association="mobilespyModel.FK_MBS_ContactMBS_ContactProperty">
+            <End Role="mbs_contactset" EntitySet="mbs_contactset" />
+            <End Role="mbs_contactpropertyset" EntitySet="mbs_contactpropertyset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_Contact" Association="mobilespyModel.FK_MBS_SessionMBS_Contact">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_contactset" EntitySet="mbs_contactset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_DeviceMBS_Session" Association="mobilespyModel.FK_MBS_DeviceMBS_Session">
+            <End Role="mbs_deviceset" EntitySet="mbs_deviceset" />
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_FileSystem" Association="mobilespyModel.FK_MBS_SessionMBS_FileSystem">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_filesystemset" EntitySet="mbs_filesystemset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_Session" Association="mobilespyModel.FK_MBS_SessionMBS_Session">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_sessionset1" EntitySet="mbs_sessionset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MBS_SessionMBS_SMS" Association="mobilespyModel.FK_MBS_SessionMBS_SMS">
+            <End Role="mbs_sessionset" EntitySet="mbs_sessionset" />
+            <End Role="mbs_smsset" EntitySet="mbs_smsset" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="mbs_callset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="String" Nullable="false" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="StartTimeStamp" Type="DateTime" Nullable="false" />
+          <Property Name="StopTimeStamp" Type="DateTime" Nullable="false" />
+          <Property Name="MBS_SessionId" Type="Int64" Nullable="false" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="mbs_sessionset" Relationship="mobilespyModel.FK_MBS_SessionMBS_Call" FromRole="mbs_callset" ToRole="mbs_sessionset" />
+        </EntityType>
+        <EntityType Name="mbs_contactpropertyset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Property" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" />
+          <Property Name="Datetime" Type="DateTime" />
+          <Property Name="Binary" Type="Binary" />
+          <Property Name="MBS_ContactId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="mbs_contactset" Relationship="mobilespyModel.FK_MBS_ContactMBS_ContactProperty" FromRole="mbs_contactpropertyset" ToRole="mbs_contactset" />
+        </EntityType>
+        <EntityType Name="mbs_contactset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" />
+          <Property Name="MBS_SessionId" Type="Int64" Nullable="false" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="mbs_contactpropertyset" Relationship="mobilespyModel.FK_MBS_ContactMBS_ContactProperty" FromRole="mbs_contactset" ToRole="mbs_contactpropertyset" />
+          <NavigationProperty Name="mbs_sessionset" Relationship="mobilespyModel.FK_MBS_SessionMBS_Contact" FromRole="mbs_contactset" ToRole="mbs_sessionset" />
+        </EntityType>
+        <EntityType Name="mbs_deviceset">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="String" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" />
+          <Property Name="Label" Type="String" />
+          <Property Name="Manufacturer" Type="String" />
+          <Property Name="Product" Type="String" />
+          <Property Name="ESN" Type="String" />
+          <Property Name="Lac" Type="Int64" />
+          <Property Name="Cid" Type="Int64" />
+          <Property Name="HWRevision" Type="String" />
+          <Property Name="IMEI" Type="String" />
+          <Property Name="Phone" Type="Int64" />
+          <Property Name="Platform" Type="String" />
+          <Property Name="ReturnedIMEI" Type="String" />
+          <Property Name="SWRevision" Type="String" />
+          <Property Name="IMSI" Type="String" />
+          <Property Name="ICCID" Type="String" />
+          <Property Name="LAI" Type="String" />
+          <Property Name="Phrase" Type="String" />
+          <NavigationProperty Name="mbs_sessionset" Relationship="mobilespyModel.FK_MBS_DeviceMBS_Session" FromRole="mbs_deviceset" ToRole="mbs_sessionset" />
+        </EntityType>
+        <EntityType Name="mbs_filesystemset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MappingRootPath" Type="String" Nullable="false" />
+          <Property Name="MBS_SessionId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="mbs_sessionset" Relationship="mobilespyModel.FK_MBS_SessionMBS_FileSystem" FromRole="mbs_filesystemset" ToRole="mbs_sessionset" />
+        </EntityType>
+        <EntityType Name="mbs_sessionset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" />
+          <Property Name="MBS_DeviceUID" Type="String" Nullable="false" />
+          <Property Name="ParentSessionId" Type="Int64" />
+          <NavigationProperty Name="mbs_callset" Relationship="mobilespyModel.FK_MBS_SessionMBS_Call" FromRole="mbs_sessionset" ToRole="mbs_callset" />
+          <NavigationProperty Name="mbs_contactset" Relationship="mobilespyModel.FK_MBS_SessionMBS_Contact" FromRole="mbs_sessionset" ToRole="mbs_contactset" />
+          <NavigationProperty Name="mbs_deviceset" Relationship="mobilespyModel.FK_MBS_DeviceMBS_Session" FromRole="mbs_sessionset" ToRole="mbs_deviceset" />
+          <NavigationProperty Name="mbs_filesystemset" Relationship="mobilespyModel.FK_MBS_SessionMBS_FileSystem" FromRole="mbs_sessionset" ToRole="mbs_filesystemset" />
+          <NavigationProperty Name="mbs_sessionset1" Relationship="mobilespyModel.FK_MBS_SessionMBS_Session" FromRole="mbs_sessionset" ToRole="mbs_sessionset1" />
+          <NavigationProperty Name="mbs_sessionset2" Relationship="mobilespyModel.FK_MBS_SessionMBS_Session" FromRole="mbs_sessionset1" ToRole="mbs_sessionset" />
+          <NavigationProperty Name="mbs_smsset" Relationship="mobilespyModel.FK_MBS_SessionMBS_SMS" FromRole="mbs_sessionset" ToRole="mbs_smsset" />
+        </EntityType>
+        <EntityType Name="mbs_smsset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromNumber" Type="String" />
+          <Property Name="ReceivedTimeStamp" Type="DateTime" />
+          <Property Name="SentTimeStamp" Type="DateTime" />
+          <Property Name="Head" Type="String" />
+          <Property Name="ReceivedTimeZone" Type="Int64" />
+          <Property Name="ServiceCenter" Type="String" />
+          <Property Name="State" Type="Int16" />
+          <Property Name="Status" Type="SByte" />
+          <Property Name="Text" Type="String" />
+          <Property Name="ToNumber" Type="String" />
+          <Property Name="Type" Type="Int16" />
+          <Property Name="MBS_SessionId" Type="Int64" Nullable="false" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="mbs_sessionset" Relationship="mobilespyModel.FK_MBS_SessionMBS_SMS" FromRole="mbs_smsset" ToRole="mbs_sessionset" />
+        </EntityType>
+        <Association Name="FK_MBS_SessionMBS_Call">
+          <End Role="mbs_sessionset" Type="mobilespyModel.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_callset" Type="mobilespyModel.mbs_callset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_callset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_ContactMBS_ContactProperty">
+          <End Role="mbs_contactset" Type="mobilespyModel.mbs_contactset" Multiplicity="1" />
+          <End Role="mbs_contactpropertyset" Type="mobilespyModel.mbs_contactpropertyset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_contactset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_contactpropertyset">
+              <PropertyRef Name="MBS_ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_Contact">
+          <End Role="mbs_sessionset" Type="mobilespyModel.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_contactset" Type="mobilespyModel.mbs_contactset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_contactset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_DeviceMBS_Session">
+          <End Role="mbs_deviceset" Type="mobilespyModel.mbs_deviceset" Multiplicity="1" />
+          <End Role="mbs_sessionset" Type="mobilespyModel.mbs_sessionset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_deviceset">
+              <PropertyRef Name="UID" />
+            </Principal>
+            <Dependent Role="mbs_sessionset">
+              <PropertyRef Name="MBS_DeviceUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_FileSystem">
+          <End Role="mbs_sessionset" Type="mobilespyModel.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_filesystemset" Type="mobilespyModel.mbs_filesystemset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_filesystemset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_Session">
+          <End Role="mbs_sessionset" Type="mobilespyModel.mbs_sessionset" Multiplicity="0..1" />
+          <End Role="mbs_sessionset1" Type="mobilespyModel.mbs_sessionset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_sessionset1">
+              <PropertyRef Name="ParentSessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MBS_SessionMBS_SMS">
+          <End Role="mbs_sessionset" Type="mobilespyModel.mbs_sessionset" Multiplicity="1" />
+          <End Role="mbs_smsset" Type="mobilespyModel.mbs_smsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mbs_sessionset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="mbs_smsset">
+              <PropertyRef Name="MBS_SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mobilespyModelStoreContainer" CdmEntityContainer="mobilespyEntities">
+          <EntitySetMapping Name="mbs_callset"><EntityTypeMapping TypeName="mobilespyModel.mbs_callset"><MappingFragment StoreEntitySet="mbs_callset">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Number" ColumnName="Number" />
+            <ScalarProperty Name="Duration" ColumnName="Duration" />
+            <ScalarProperty Name="Status" ColumnName="Status" />
+            <ScalarProperty Name="StartTimeStamp" ColumnName="StartTimeStamp" />
+            <ScalarProperty Name="StopTimeStamp" ColumnName="StopTimeStamp" />
+            <ScalarProperty Name="MBS_SessionId" ColumnName="MBS_SessionId" />
+            <ScalarProperty Name="Class" ColumnName="Class" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="mbs_contactpropertyset"><EntityTypeMapping TypeName="mobilespyModel.mbs_contactpropertyset"><MappingFragment StoreEntitySet="mbs_contactpropertyset">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Property" ColumnName="Property" />
+            <ScalarProperty Name="Text" ColumnName="Text" />
+            <ScalarProperty Name="Datetime" ColumnName="Datetime" />
+            <ScalarProperty Name="Binary" ColumnName="Binary" />
+            <ScalarProperty Name="MBS_ContactId" ColumnName="MBS_ContactId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="mbs_contactset"><EntityTypeMapping TypeName="mobilespyModel.mbs_contactset"><MappingFragment StoreEntitySet="mbs_contactset">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Label" ColumnName="Label" />
+            <ScalarProperty Name="MBS_SessionId" ColumnName="MBS_SessionId" />
+            <ScalarProperty Name="Class" ColumnName="Class" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="mbs_deviceset"><EntityTypeMapping TypeName="mobilespyModel.mbs_deviceset"><MappingFragment StoreEntitySet="mbs_deviceset">
+            <ScalarProperty Name="UID" ColumnName="UID" />
+            <ScalarProperty Name="Type" ColumnName="Type" />
+            <ScalarProperty Name="Label" ColumnName="Label" />
+            <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+            <ScalarProperty Name="Product" ColumnName="Product" />
+            <ScalarProperty Name="ESN" ColumnName="ESN" />
+            <ScalarProperty Name="Lac" ColumnName="Lac" />
+            <ScalarProperty Name="Cid" ColumnName="Cid" />
+            <ScalarProperty Name="HWRevision" ColumnName="HWRevision" />
+            <ScalarProperty Name="IMEI" ColumnName="IMEI" />
+            <ScalarProperty Name="Phone" ColumnName="Phone" />
+            <ScalarProperty Name="Platform" ColumnName="Platform" />
+            <ScalarProperty Name="ReturnedIMEI" ColumnName="ReturnedIMEI" />
+            <ScalarProperty Name="SWRevision" ColumnName="SWRevision" />
+            <ScalarProperty Name="IMSI" ColumnName="IMSI" />
+            <ScalarProperty Name="ICCID" ColumnName="ICCID" />
+            <ScalarProperty Name="LAI" ColumnName="LAI" />
+            <ScalarProperty Name="Phrase" ColumnName="Phrase" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="mbs_filesystemset"><EntityTypeMapping TypeName="mobilespyModel.mbs_filesystemset"><MappingFragment StoreEntitySet="mbs_filesystemset">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="MappingRootPath" ColumnName="MappingRootPath" />
+            <ScalarProperty Name="MBS_SessionId" ColumnName="MBS_SessionId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="mbs_sessionset"><EntityTypeMapping TypeName="mobilespyModel.mbs_sessionset"><MappingFragment StoreEntitySet="mbs_sessionset">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+            <ScalarProperty Name="MBS_DeviceUID" ColumnName="MBS_DeviceUID" />
+            <ScalarProperty Name="ParentSessionId" ColumnName="ParentSessionId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="mbs_smsset"><EntityTypeMapping TypeName="mobilespyModel.mbs_smsset"><MappingFragment StoreEntitySet="mbs_smsset">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="FromNumber" ColumnName="FromNumber" />
+            <ScalarProperty Name="ReceivedTimeStamp" ColumnName="ReceivedTimeStamp" />
+            <ScalarProperty Name="SentTimeStamp" ColumnName="SentTimeStamp" />
+            <ScalarProperty Name="Head" ColumnName="Head" />
+            <ScalarProperty Name="ReceivedTimeZone" ColumnName="ReceivedTimeZone" />
+            <ScalarProperty Name="ServiceCenter" ColumnName="ServiceCenter" />
+            <ScalarProperty Name="State" ColumnName="State" />
+            <ScalarProperty Name="Status" ColumnName="Status" />
+            <ScalarProperty Name="Text" ColumnName="Text" />
+            <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
+            <ScalarProperty Name="Type" ColumnName="Type" />
+            <ScalarProperty Name="MBS_SessionId" ColumnName="MBS_SessionId" />
+            <ScalarProperty Name="Class" ColumnName="Class" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="mobilespy">
+        <EntityTypeShape EntityType="mobilespyModel.mbs_callset" Width="1.5" PointX="5.25" PointY="1.375" Height="2.4653124999999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_contactpropertyset" Width="1.5" PointX="7.5" PointY="4.625" Height="2.1280729166666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_contactset" Width="1.5" PointX="5.25" PointY="4.75" Height="1.9594531249999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_deviceset" Width="1.5" PointX="0.75" PointY="5.375" Height="4.1515104166666648" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_filesystemset" Width="1.5" PointX="5.25" PointY="7.5" Height="1.6222135416666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_sessionset" Width="1.5" PointX="3" PointY="6" Height="2.8025520833333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_smsset" Width="1.5" PointX="5.25" PointY="9.875" Height="3.4770312499999996" IsExpanded="true" />
+        <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_Call" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.75" PointY="6" />
+          <ConnectorPoint PointX="3.75" PointY="2.60765625" />
+          <ConnectorPoint PointX="5.25" PointY="2.60765625" />
+        </AssociationConnector>
+        <AssociationConnector Association="mobilespyModel.FK_MBS_ContactMBS_ContactProperty" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.75" PointY="5.7297265625" />
+          <ConnectorPoint PointX="7.5" PointY="5.7297265625" />
+        </AssociationConnector>
+        <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_Contact" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="6.3547265625" />
+          <ConnectorPoint PointX="5.25" PointY="6.3547265625" />
+        </AssociationConnector>
+        <AssociationConnector Association="mobilespyModel.FK_MBS_DeviceMBS_Session" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="7.4012760416666659" />
+          <ConnectorPoint PointX="3" PointY="7.4012760416666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_FileSystem" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="8.1512760416666659" />
+          <ConnectorPoint PointX="5.25" PointY="8.1512760416666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_Session" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.5319230769230767" PointY="8.8025520833333317" />
+          <ConnectorPoint PointX="3.5319230769230767" PointY="9.0525520833333317" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="9.0525520833333317" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="8.8025520833333317" />
+        </AssociationConnector>
+        <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_SMS" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.2347090384615385" PointY="8.8025520833333317" />
+          <ConnectorPoint PointX="3.2347090384615385" PointY="11.613515625" />
+          <ConnectorPoint PointX="5.25" PointY="11.613515625" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

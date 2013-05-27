@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{667BEF62-1FAB-4620-B2FC-AD76CEF3B9EE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MobileSpyTest</RootNamespace>
+    <AssemblyName>MobileSpyTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="datastore">
+      <HintPath>..\..\datastore\datastore\datastore\bin\Debug\datastore.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="COMlib\CDriver.cs" />
+    <Compile Include="COMlib\CEntries.cs" />
+    <Compile Include="COMlib\CEntry.cs" />
+    <Compile Include="COMlib\CEntryItem.cs" />
+    <Compile Include="COMlib\CEvents.cs" />
+    <Compile Include="COMlib\CFile.cs" />
+    <Compile Include="COMlib\CFiles.cs" />
+    <Compile Include="COMlib\CFileSystem.cs" />
+    <Compile Include="COMlib\CFolder.cs" />
+    <Compile Include="COMlib\CFolders.cs" />
+    <Compile Include="COMlib\CItem.cs" />
+    <Compile Include="COMlib\CItemList.cs" />
+    <Compile Include="COMlib\CItemNode.cs" />
+    <Compile Include="COMlib\CKeyboard.cs" />
+    <Compile Include="COMlib\CLicense.cs" />
+    <Compile Include="COMlib\CMessage.cs" />
+    <Compile Include="COMlib\CModel.cs" />
+    <Compile Include="COMlib\CModels.cs" />
+    <Compile Include="COMlib\CNotes.cs" />
+    <Compile Include="COMlib\COrganizer.cs" />
+    <Compile Include="COMlib\COrganizerEntries.cs" />
+    <Compile Include="COMlib\COrganizerEntry.cs" />
+    <Compile Include="COMlib\CPhonebook.cs" />
+    <Compile Include="COMlib\CPhonebookEntries.cs" />
+    <Compile Include="COMlib\CPhonebookEntry.cs" />
+    <Compile Include="COMlib\CPhonebooks.cs" />
+    <Compile Include="COMlib\CPort.cs" />
+    <Compile Include="COMlib\CPorts.cs" />
+    <Compile Include="COMlib\CSms.cs" />
+    <Compile Include="COMlib\CSmsItem.cs" />
+    <Compile Include="COMlib\CSmsItems.cs" />
+    <Compile Include="COMlib\CSource.cs" />
+    <Compile Include="COMlib\CSources.cs" />
+    <Compile Include="COMlib\CTasks.cs" />
+    <Compile Include="Model\Call.cs" />
+    <Compile Include="Model\Contact.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="COMlib\sourcedef.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MobilEditCom">
+      <Guid>{3D7D219A-C590-40B9-A2AF-4102B43FFCBA}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
