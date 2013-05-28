@@ -7,8 +7,9 @@ using System.Collections;
 using COMlib;
 using MobileSpyTest.Model;
 using DataStore = datastore.DataStore;
-using DeviceInfo = datastore.DeviceInfo;
-using Device = datastore.Device;
+using DeviceInfo = datastore.dDeviceInfo;
+using Device = datastore.dDevice;
+using datastore;
 
 namespace MobileSpyTest
 {
@@ -20,7 +21,6 @@ namespace MobileSpyTest
 
             // init driver
             var driver = new CDriver(app);
-
             try
             {
                 driver.Ports.Update();              // enable all the ports
@@ -31,10 +31,22 @@ namespace MobileSpyTest
                     else
                         port.Enabled = false;
                 }
+                
                 driver.Ports.Push();
             }
             catch (Exception e)
             {
+                driver.Ports.Clear();
+
+                driver.Ports.Update();              // enable all the ports
+                foreach (COMlib.CPort port in driver.Ports)
+                {
+                    if (port.Type != COMlib.CPort.EType.iTunesBackup)
+                        port.Enabled = true;
+                    else
+                        port.Enabled = false;
+                }
+
                 Console.WriteLine("error updating port: " + e.Message);
             }
 
@@ -47,6 +59,11 @@ namespace MobileSpyTest
             }
             catch (Exception e)
             {
+                driver.Models.Clear();
+                driver.Models.Update();             // enable all the models
+                foreach (CModel model in driver.Models)
+                    model.Enabled = true;
+
                 Console.WriteLine("error updating model: " + e.Message);
             }
 
@@ -70,20 +87,19 @@ namespace MobileSpyTest
                         //installConnectorProgress.Show();
                         //phone.InstallConnector(installConnectorProgress.Progress);
                         //installConnectorProgress.Close();
+                        phone.InstallConnector();
 
                         //System.Windows.Forms.MessageBox.Show("Connector was installed, please wait until the device is connected");
                         return;
                     }
 
-                    //source.Sms.Items.Update();
-                    //foreach (CSmsItem item in source.Sms.Items)
-                    //{
-                    //    Console.WriteLine(item.Type.ToString() + "\r\n" + item.State.ToString() + "\r\n" +
-                    //        item.Number + "\r\n" + item.Text + "\r\nReceived time: " + item.ReceivedTime + "\r\nSent time: " + item.SentTime + "\r\n" + "\r\n\r\n");
-                    //}
+                    
 
                     try
                     {
+                        Console.WriteLine("reading sms...");
+                        var sms = ReadSms(source);
+                        Console.WriteLine("finished reading sms");
                         Console.WriteLine("reading phone book...");
                         var contacts = ReadPhoneBook(source);
                         Console.WriteLine("finished reading phone book");
@@ -92,7 +108,7 @@ namespace MobileSpyTest
                         Console.WriteLine("finished reading call history");
                         Console.WriteLine("saving to db...");
 
-                        SaveToDB(phone, contacts, calls);
+                        SaveToDB(phone, contacts, calls, sms);
                         Console.WriteLine("finished saving to db");
                     }
                     catch (Exception ex)
@@ -101,6 +117,8 @@ namespace MobileSpyTest
                     }
                 }
             }
+
+            Console.ReadLine();
         }
 
         private static List<Contact> ReadPhoneBook(CSource source)
@@ -122,8 +140,14 @@ namespace MobileSpyTest
                             string dateType = item.DataType.ToString();
                             if (item.Data is CEntryItem.CData.CTextData)
                             {
-                                if (dateType == "Label")
-                                    contact.Name = (item.Data as CEntryItem.CData.CTextData).Text;
+                                if (dateType == "Label" || dateType == "FirstName" || dateType == "LastName")
+                                {
+                                    if (contact.Name == null)
+                                        contact.Name = (item.Data as CEntryItem.CData.CTextData).Text;
+                                    else contact.Name += " " + contact.Name;
+                                }
+                                else
+                                    Console.WriteLine("not supported text data type: " + dateType);
                             }
                             else if (item.Data is CEntryItem.CData.CNumberData)
                             {
@@ -140,7 +164,11 @@ namespace MobileSpyTest
                                 //+ ";" + (item.Data as CEntryItem.CData.CAddressData).Country;
                             }
                             else
-                                throw new NotImplementedException("phonebook data not supported");
+                            {
+                                //throw new NotImplementedException("phonebook data not supported");
+                                if (item.Data != null)
+                                    Console.WriteLine("not supported phone book data: " + item.DataType);
+                            }
                         }
                     }
                     contacts.Add(contact);
@@ -208,14 +236,32 @@ namespace MobileSpyTest
             return calls;
         }
 
-        private static void SaveToDB(CSource.CMobilePhone phone_, List<Contact> contacts_, List<Call> calls_)
+        private static List<Sms> ReadSms(CSource source)
+        {
+            var sms = new List<Sms>();
+            source.Sms.Items.Update();
+
+            foreach (CSmsItem item in source.Sms.Items)
+            {
+                var s = new Sms();
+                var sInfo = new SMSInfo()
+                {
+                    
+                };
+                Console.WriteLine(item.Type.ToString() + "\r\n" + item.State.ToString() + "\r\n" +
+                    item.Number + "\r\n" + item.Text + "\r\nReceived time: " + item.ReceivedTime + "\r\nSent time: " + item.SentTime + "\r\n" + "\r\n\r\n");
+            }
+            return sms;
+        }
+
+        private static void SaveToDB(CSource.CMobilePhone phone_, 
+            List<Contact> contacts_, List<Call> calls_, List<Sms> sms_)
         {
             using (DataStore ds = new DataStore())
             {
-                Guid guid1 = Guid.NewGuid();
                 DeviceInfo devInfo = new DeviceInfo();
                 devInfo.Label = phone_.Label;
-                Device dev1 = ds.createDevice(guid1, "phone", devInfo);
+                Device dev1 = ds.createDevice(phone_.UniqueIdentifier, "phone", devInfo);
                 if (contacts_ != null)
                 {
                     foreach (var c in contacts_)
@@ -229,6 +275,13 @@ namespace MobileSpyTest
                     foreach (var c in calls_)
                     {
                         dev1.addCall(c.Number, c.Duration, c.Status, c.StartTime, c.StopTime, (int)c.Type);    
+                    }
+                }
+                if (sms_ != null)
+                {
+                    foreach (var s in sms_)
+                    {
+                        dev1.addSMS((int)s.SendReceive, s.SMSInfo);
                     }
                 }
             }
