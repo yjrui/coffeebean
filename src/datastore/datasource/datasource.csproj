@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6E1EBC0A-4C25-4276-BDAE-4E29E48F33A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>datasource</RootNamespace>
+    <AssemblyName>datasource</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="dCall.cs" />
+    <Compile Include="dContact.cs" />
+    <Compile Include="DataSource.cs" />
+    <Compile Include="dDevice.cs" />
+    <Compile Include="dSMS.cs" />
+    <Compile Include="MBSDataSource.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MBSDataSource.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MBSDataSource.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MBSDataSourceModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MBSDataSourceModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_callset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_contactpropertyset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_contactset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_deviceset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_filesystemset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_sessionset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mbs_smsset.cs">
+      <DependentUpon>MBSDataSource.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="MBSDataSourceModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MBSDataSourceModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MBSDataSource.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MBSDataSource.Context.cs</LastGenOutput>
+    </None>
+    <None Include="MBSDataSource.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MBSDataSource.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
