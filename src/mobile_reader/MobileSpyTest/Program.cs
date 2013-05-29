@@ -246,10 +246,28 @@ namespace MobileSpyTest
                 var s = new Sms();
                 var sInfo = new SMSInfo()
                 {
-                    
+                    State = (short)item.State,
+                    Text = item.Text,
+                    Status = (byte)item.Status,
+                    ServiceCenter = item.ServiceCenter
                 };
-                Console.WriteLine(item.Type.ToString() + "\r\n" + item.State.ToString() + "\r\n" +
-                    item.Number + "\r\n" + item.Text + "\r\nReceived time: " + item.ReceivedTime + "\r\nSent time: " + item.SentTime + "\r\n" + "\r\n\r\n");
+                s.SMSInfo = sInfo;
+                if (item.Type == CSmsItem.EType.Deliver)
+                {
+                    sInfo.FromNumber = item.Number;
+                    sInfo.ReceivedTimeStamp = item.ReceivedTime;
+                    sInfo.ReceivedTimeZone = item.ReceivedTimezone;
+                    s.SendReceive = SmsSendReceive.Received;
+                }
+                else if (item.Type == CSmsItem.EType.Submit)
+                {
+                    sInfo.ToNumber = item.Number;
+                    sInfo.SentTimeStamp = item.SentTime;
+                    s.SendReceive = SmsSendReceive.Sent;
+                }
+                sms.Add(s);
+                //Console.WriteLine(item.Type.ToString() + "\r\n" + item.State.ToString() + "\r\n" +
+                //    item.Number + "\r\n" + item.Text + "\r\nReceived time: " + item.ReceivedTime + "\r\nSent time: " + item.SentTime + "\r\n" + "\r\n\r\n");
             }
             return sms;
         }
