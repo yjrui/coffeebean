@@ -8,26 +8,14 @@
     <Grid>
         <StackPanel>
             <Label HorizontalAlignment="Center" FontSize="16">联系人信息</Label>
-            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Label Width="70">类型</Label>
-                <TextBox Text="{Binding Status, Mode=OneWay, Converter={StaticResource statusConverter}}" MinWidth="150"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Label Width="70">姓名</Label>
+                <TextBox Text="{Binding Name, Mode=OneWay}" MinWidth="150"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Label Width="70">电话号码</Label>
                 <TextBox Text="{Binding Number, Mode=OneWay}" MinWidth="150"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Label Width="70">开始时间</Label>
-                <TextBox Text="{Binding StartTimeStamp, Mode=OneWay}" MinWidth="150"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Label Width="70">结束时间</Label>
-                <TextBox Text="{Binding StopTimeStamp, Mode=OneWay}" MinWidth="150"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Label Width="70">时长</Label>
-                <TextBox Text="{Binding Duration, Mode=OneWay}" MinWidth="150"/>
-            </StackPanel>-->
         </StackPanel>
     </Grid>
 </UserControl>

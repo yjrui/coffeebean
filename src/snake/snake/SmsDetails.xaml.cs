@@ -11,22 +11,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MobileSpyTest.Model;
+using datasource;
 
 namespace snake
 {
     /// <summary>
-    /// Interaction logic for ContactDetails.xaml
+    /// Interaction logic for SmsDetails.xaml
     /// </summary>
-    public partial class ContactDetails : UserControl
+    public partial class SmsDetails : UserControl
     {
-        private Contact _contact;
+        private dSMS _sms;
 
-        public ContactDetails(Contact contact_)
+        public SmsDetails(dSMS sms_)
         {
             InitializeComponent();
-            _contact = contact_;
-            DataContext = _contact;
+            _sms = sms_;
+            DataContext = _sms;
         }
     }
 }

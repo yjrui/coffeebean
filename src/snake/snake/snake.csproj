@@ -39,7 +39,14 @@
   <ItemGroup>
     <Reference Include="datasource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\datastore\datastore\datasource\bin\Debug\datasource.dll</HintPath>
+      <HintPath>..\..\datastore\datasource\bin\Debug\datasource.dll</HintPath>
+    </Reference>
+    <Reference Include="datastore">
+      <HintPath>..\..\datastore\datastore\bin\Debug\datastore.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\datastore\datasource\bin\Debug\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -60,6 +67,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\SMSTypeConverter.cs" />
+    <Compile Include="Model\Call.cs" />
+    <Compile Include="Model\Contact.cs" />
+    <Compile Include="Model\Sms.cs" />
+    <Compile Include="SmsDetails.xaml.cs">
+      <DependentUpon>SmsDetails.xaml</DependentUpon>
+    </Compile>
     <Page Include="CallDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -87,6 +101,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SmsDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

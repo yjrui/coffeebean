@@ -20,8 +20,8 @@ namespace snake
     /// </summary>
     public partial class CallDetails : UserControl
     {
-        private Call _call;
-        public CallDetails(Call call_)
+        private dCall _call;
+        public CallDetails(dCall call_)
         {
             InitializeComponent();
             _call = call_;

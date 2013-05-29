@@ -257,12 +257,14 @@ namespace MobileSpyTest
                     sInfo.FromNumber = item.Number;
                     sInfo.ReceivedTimeStamp = item.ReceivedTime;
                     sInfo.ReceivedTimeZone = item.ReceivedTimezone;
+                    sInfo.Type = (short)CSmsItem.EType.Deliver;
                     s.SendReceive = SmsSendReceive.Received;
                 }
                 else if (item.Type == CSmsItem.EType.Submit)
                 {
                     sInfo.ToNumber = item.Number;
                     sInfo.SentTimeStamp = item.SentTime;
+                    sInfo.Type = (short)CSmsItem.EType.Submit;
                     s.SendReceive = SmsSendReceive.Sent;
                 }
                 sms.Add(s);
@@ -285,7 +287,7 @@ namespace MobileSpyTest
                     foreach (var c in contacts_)
                     {
                         var contact = dev1.createContact(c.Name, 0);
-                        contact.addTextProp(0x110, c.Number);
+                        contact.addTextProp(257, c.Number);
                     }
                 }
                 if (calls_ != null)
@@ -302,6 +304,7 @@ namespace MobileSpyTest
                         dev1.addSMS((int)s.SendReceive, s.SMSInfo);
                     }
                 }
+                ds.commit();
             }
         }
     }

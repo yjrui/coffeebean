@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using datasource;
 using System.Threading.Tasks;
+using MobileSpyTest.Model;
 
 namespace snake
 {
@@ -21,9 +22,9 @@ namespace snake
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Device> _devices;
+        private List<dDevice> _devices;
         private DataSource _ds = new DataSource();
-        private Device _selectedDevice;
+        private dDevice _selectedDevice;
 
         public MainWindow()
         {
@@ -35,7 +36,7 @@ namespace snake
             lbDevice.Items.Clear();
             lbStatus.Content = "正在从数据库读取手机信息";
             var context = TaskScheduler.FromCurrentSynchronizationContext();
-            _devices = new List<Device>();
+            _devices = new List<dDevice>();
             Task task = Task.Factory.StartNew(() =>
                 {
                     //using (var ds = new DataSource())
@@ -73,11 +74,35 @@ namespace snake
                 {
                     if (item.Name == "lbiPhonebook")
                     {
+                        var context = TaskScheduler.FromCurrentSynchronizationContext();
+                        dContact[] contacts = null;
+
+                        Task.Factory.StartNew(() =>
+                        {
+                            contacts = _selectedDevice.getContacts(session);
+                        }).ContinueWith(_ =>
+                        {
+                            if (contacts != null)
+                            {
+                                foreach (var contact in contacts)
+                                {
+                                    var c = new Contact() { Name = contact.Label };
+                                    var property = contact.getProperties().FirstOrDefault(p => p.name == dContact.PropertyType.NUMBER_NUM.ToString());
+                                    if (property != null) c.Number = property.value.ToString();
+                                    var contactItem = new ListBoxItem()
+                                    {
+                                        Content = contact.Label,
+                                        Tag = c
+                                    };
+                                    lbItemPreview.Items.Add(contactItem);
+                                }
+                            }
+                        }, context);
                     }
                     else if (item.Name == "lbiCallHistory")
                     {
                         var context = TaskScheduler.FromCurrentSynchronizationContext();
-                        Call[] calls = null;
+                        dCall[] calls = null;
 
                         Task.Factory.StartNew(() =>
                             {
@@ -100,6 +125,27 @@ namespace snake
                     }
                     else if (item.Name == "lbiSMS")
                     {
+                        var context = TaskScheduler.FromCurrentSynchronizationContext();
+                        dSMS[] sms = null;
+
+                        Task.Factory.StartNew(() =>
+                        {
+                            sms = _selectedDevice.getSMSList(session);
+                        }).ContinueWith(_ =>
+                        {
+                            if (sms != null)
+                            {
+                                foreach (var s in sms)
+                                {
+                                    var smsItem = new ListBoxItem()
+                                    {
+                                        Content = s.Type == dSMS.SMSType.DELIVER ? s.FromNumber : s.ToNumber,
+                                        Tag = s
+                                    };
+                                    lbItemPreview.Items.Add(smsItem);
+                                }
+                            }
+                        }, context);
                     }
                 }
             }
@@ -110,7 +156,7 @@ namespace snake
             var lbItem = lbDevice.SelectedItem as ListBoxItem;
             if (lbItem != null)
             {
-                _selectedDevice = lbItem.Tag as Device;
+                _selectedDevice = lbItem.Tag as dDevice;
             }
             else _selectedDevice = null;
         }
@@ -121,8 +167,21 @@ namespace snake
             var lbItem = lbItemPreview.SelectedItem as ListBoxItem;
             if (lbItem != null)
             {
-                var callCtrl = new CallDetails(lbItem.Tag as Call);
-                gbDetails.Content = callCtrl;
+                if (lbItem.Tag is dCall)
+                {
+                    var callCtrl = new CallDetails(lbItem.Tag as dCall);
+                    gbDetails.Content = callCtrl;
+                }
+                else if (lbItem.Tag is Contact)
+                {
+                    var contactCtrl = new ContactDetails(lbItem.Tag as Contact);
+                    gbDetails.Content = contactCtrl;
+                }
+                else if (lbItem.Tag is dSMS)
+                {
+                    var smsCtrl = new SmsDetails(lbItem.Tag as dSMS);
+                    gbDetails.Content = smsCtrl;
+                }
             }
         }
     }
