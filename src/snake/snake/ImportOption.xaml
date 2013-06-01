@@ -1,0 +1,21 @@
+﻿<Window x:Class="snake.ImportOption"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="导入选项" Height="300" Width="300" SizeToContent="WidthAndHeight">
+    <StackPanel>
+        <GroupBox Header="导入内容">
+            <GroupBox.Content>
+                <StackPanel>
+                    <CheckBox Name="cbContact" Content="联系人" IsChecked="True"/>
+                    <CheckBox Name="cbCall" Content="通话记录" IsChecked="True"/>
+                    <CheckBox Name="cbSms" Content="短信" IsChecked="True"/>
+                    <CheckBox Name="cbFS" Content="文件系统" IsChecked="True"/>
+                </StackPanel>
+            </GroupBox.Content>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="lbOK" Content="确定" Margin="5" Click="lbOK_Click" />
+            <Button Name="lbCancel" Content="取消" Margin="5" Click="lbCancel_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

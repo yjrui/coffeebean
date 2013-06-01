@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MobileSpyTest.Model
+namespace snake.Model
 {
     public class Contact
     {

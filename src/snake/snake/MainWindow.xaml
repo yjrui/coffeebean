@@ -17,7 +17,7 @@
         </Menu>
         <ToolBar Grid.Row="1">
             <Button Name="btnRead" Content="读取数据" Click="btnRead_Click" />
-            <Button Name="btnLoad" Content="导入数据" />
+            <Button Name="btnLoad" Content="导入数据" Click="btnLoad_Click" />
         </ToolBar>
         <Grid Grid.Row="2" Name="gridMain">
             <Grid.ColumnDefinitions>

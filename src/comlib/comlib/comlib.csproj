@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AA6A45D7-71F9-48B1-BD50-21452A765EB3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>comlib</RootNamespace>
+    <AssemblyName>comlib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="comlib\CCallManagement.cs" />
+    <Compile Include="comlib\CDriver.cs" />
+    <Compile Include="comlib\CEntries.cs" />
+    <Compile Include="comlib\CEntry.cs" />
+    <Compile Include="comlib\CEntryItem.cs" />
+    <Compile Include="comlib\CEvents.cs" />
+    <Compile Include="comlib\CFile.cs" />
+    <Compile Include="comlib\CFiles.cs" />
+    <Compile Include="comlib\CFileSystem.cs" />
+    <Compile Include="comlib\CFolder.cs" />
+    <Compile Include="comlib\CFolders.cs" />
+    <Compile Include="comlib\CItem.cs" />
+    <Compile Include="comlib\CItemList.cs" />
+    <Compile Include="comlib\CItemNode.cs" />
+    <Compile Include="comlib\CKeyboard.cs" />
+    <Compile Include="comlib\CLicense.cs" />
+    <Compile Include="comlib\CMessage.cs" />
+    <Compile Include="comlib\CModel.cs" />
+    <Compile Include="comlib\CModels.cs" />
+    <Compile Include="comlib\CNotes.cs" />
+    <Compile Include="comlib\COrganizer.cs" />
+    <Compile Include="comlib\COrganizerEntries.cs" />
+    <Compile Include="comlib\COrganizerEntry.cs" />
+    <Compile Include="comlib\CPhonebook.cs" />
+    <Compile Include="comlib\CPhonebookEntries.cs" />
+    <Compile Include="comlib\CPhonebookEntry.cs" />
+    <Compile Include="comlib\CPhonebooks.cs" />
+    <Compile Include="comlib\CPort.cs" />
+    <Compile Include="comlib\CPorts.cs" />
+    <Compile Include="comlib\CSms.cs" />
+    <Compile Include="comlib\CSmsItem.cs" />
+    <Compile Include="comlib\CSmsItems.cs" />
+    <Compile Include="comlib\CSource.cs" />
+    <Compile Include="comlib\CSources.cs" />
+    <Compile Include="comlib\CTasks.cs" />
+    <Compile Include="comlib\sourcedef.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MobilEditCom">
+      <Guid>{3D7D219A-C590-40B9-A2AF-4102B43FFCBA}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

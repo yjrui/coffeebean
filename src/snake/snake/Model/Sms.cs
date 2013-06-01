@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using datastore;
 
-namespace MobileSpyTest.Model
+namespace snake.Model
 {
     public enum SmsSendReceive
     {

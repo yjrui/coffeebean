@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="comlib">
+      <HintPath>..\..\comlib\comlib\bin\Debug\comlib.dll</HintPath>
+    </Reference>
     <Reference Include="datasource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\datastore\datasource\bin\Debug\datasource.dll</HintPath>
@@ -68,17 +71,27 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\SMSTypeConverter.cs" />
+    <Compile Include="Import.xaml.cs">
+      <DependentUpon>Import.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Call.cs" />
     <Compile Include="Model\Contact.cs" />
     <Compile Include="Model\Sms.cs" />
     <Compile Include="SmsDetails.xaml.cs">
       <DependentUpon>SmsDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImportOption.xaml.cs">
+      <DependentUpon>ImportOption.xaml</DependentUpon>
+    </Compile>
     <Page Include="CallDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ContactDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Import.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,6 +115,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="SmsDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImportOption.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,7 +148,17 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="MobilEditCom">
+      <Guid>{3D7D219A-C590-40B9-A2AF-4102B43FFCBA}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

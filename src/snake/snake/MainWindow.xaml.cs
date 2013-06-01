@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using datasource;
 using System.Threading.Tasks;
-using MobileSpyTest.Model;
+using snake.Model;
 
 namespace snake
 {
@@ -183,6 +183,13 @@ namespace snake
                     gbDetails.Content = smsCtrl;
                 }
             }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            var importScreen = new Import();
+            importScreen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            importScreen.ShowDialog();
         }
     }
 }
