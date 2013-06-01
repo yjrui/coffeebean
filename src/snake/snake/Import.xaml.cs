@@ -18,6 +18,7 @@ using Device = datastore.dDevice;
 using datastore;
 using snake.Model;
 using System.Threading.Tasks;
+using System.IO;
 
 
 namespace snake
@@ -78,10 +79,10 @@ namespace snake
             var sources = new List<CSource>();
             try
             {
-                var app = new CMedApplication();
+                //var app = new CMedApplication();
 
                 // init driver
-                var driver = new CDriver(app);
+                var driver = new CDriver();
 
                 driver.Ports.Update();              // enable all the ports
                 foreach (COMlib.CPort port in driver.Ports)
@@ -179,7 +180,17 @@ namespace snake
                     {
                         Log("没有需要保存的记录\n");
                     }
-
+                }
+                else if (source is CSource.CSIMCard)
+                {
+                    Log("读取文件系统...\n");
+                    //string rootFolder = ReadFS(source);
+                    string root = @"G:\data\";
+                    string rootFolder = System.IO.Path.Combine(root, source.UniqueIdentifier);
+                    Log("完成\n");
+                    Log("保存...\n");
+                    SaveToDB(source, rootFolder);
+                    Log("导入完成！\n");
                 }
             }
             catch (Exception ex)
@@ -339,6 +350,86 @@ namespace snake
                 //    item.Number + "\r\n" + item.Text + "\r\nReceived time: " + item.ReceivedTime + "\r\nSent time: " + item.SentTime + "\r\n" + "\r\n\r\n");
             }
             return sms;
+        }
+
+        private string ReadFS(CSource source)
+        {
+            if (source.FileSystem != null)
+            {
+                string root = @"G:\data\";
+                COMlib.CFolder folder = source.FileSystem.RootFolder;
+                folder.Folders.Update();
+                foreach (COMlib.CFolder fld in folder.Folders)
+                {
+                    if (fld.Name == "mnt")
+                    {
+                        // for andriod, only interested in the /mnt folder
+                        ReadFolder(fld, System.IO.Path.Combine(root, source.UniqueIdentifier, fld.Name));
+                    }
+                }
+                return System.IO.Path.Combine(root, source.UniqueIdentifier);
+            }
+            return null;
+        }
+
+        private void ReadFolder(COMlib.CFolder folder, string outputPath)
+        {
+            if (folder == null) return;
+
+            if (!Directory.Exists(outputPath))
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+
+            folder.Folders.Update();
+            if (folder.Folders != null)
+            {
+                foreach (COMlib.CFolder fld in folder.Folders)
+                {
+                    ReadFolder(fld, System.IO.Path.Combine(outputPath, fld.Name));
+                }
+            }
+
+            folder.Files.Update();
+            if (folder.Files != null)
+            {
+                foreach (COMlib.CFile file in folder.Files)
+                {
+                    string filepath = System.IO.Path.Combine(outputPath, file.Name);
+                    if (File.Exists(filepath))
+                    {
+                        Log(filepath + " already exists, skip");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            using (FileStream fs = new FileStream(filepath, FileMode.CreateNew))
+                            {
+                                file.Download(fs);
+                            }
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SaveToDB(CSource source_, string rootFolder_)
+        {
+            using (DataStore ds = new DataStore())
+            {
+                DeviceInfo devInfo = new DeviceInfo();
+                devInfo.Label = source_.Label;
+                Device dev1 = ds.createDevice(source_.UniqueIdentifier, "simcard", devInfo);
+                if (rootFolder_ != null)
+                {
+                    dDevFileSystem devFS = dev1.createDevFileSystem(rootFolder_);
+                    ds.commit();
+                }
+            }
         }
 
         private static void SaveToDB(CSource.CMobilePhone phone_,

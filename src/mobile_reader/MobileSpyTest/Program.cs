@@ -10,6 +10,7 @@ using DataStore = datastore.DataStore;
 using DeviceInfo = datastore.dDeviceInfo;
 using Device = datastore.dDevice;
 using datastore;
+using System.IO;
 
 namespace MobileSpyTest
 {
@@ -20,7 +21,7 @@ namespace MobileSpyTest
             var app = new CMedApplication();
 
             // init driver
-            var driver = new CDriver(app);
+            var driver = new CDriver();
             try
             {
                 driver.Ports.Update();              // enable all the ports
@@ -31,22 +32,11 @@ namespace MobileSpyTest
                     else
                         port.Enabled = false;
                 }
-                
+
                 driver.Ports.Push();
             }
             catch (Exception e)
             {
-                driver.Ports.Clear();
-
-                driver.Ports.Update();              // enable all the ports
-                foreach (COMlib.CPort port in driver.Ports)
-                {
-                    if (port.Type != COMlib.CPort.EType.iTunesBackup)
-                        port.Enabled = true;
-                    else
-                        port.Enabled = false;
-                }
-
                 Console.WriteLine("error updating port: " + e.Message);
             }
 
@@ -59,11 +49,6 @@ namespace MobileSpyTest
             }
             catch (Exception e)
             {
-                driver.Models.Clear();
-                driver.Models.Update();             // enable all the models
-                foreach (CModel model in driver.Models)
-                    model.Enabled = true;
-
                 Console.WriteLine("error updating model: " + e.Message);
             }
 
@@ -80,23 +65,23 @@ namespace MobileSpyTest
                 {
                     Console.WriteLine("found one phone");
                     CSource.CMobilePhone phone = source as CSource.CMobilePhone;
-                    if (phone.IsConnectorRequired)
+                    if (phone != null && phone.IsConnectorRequired)
                     {
                         //Form_Progress installConnectorProgress = new Form_Progress();
                         //installConnectorProgress.Text = "Installing connector";
                         //installConnectorProgress.Show();
                         //phone.InstallConnector(installConnectorProgress.Progress);
                         //installConnectorProgress.Close();
+                        Console.WriteLine("installing connector");
                         phone.InstallConnector();
-
+                        Console.WriteLine("finished installing connector");
                         //System.Windows.Forms.MessageBox.Show("Connector was installed, please wait until the device is connected");
-                        return;
+                        //return;
                     }
-
-                    
 
                     try
                     {
+                        Console.WriteLine("process device: " + source.Label);
                         Console.WriteLine("reading sms...");
                         var sms = ReadSms(source);
                         Console.WriteLine("finished reading sms");
@@ -107,7 +92,6 @@ namespace MobileSpyTest
                         var calls = ReadCalls(source);
                         Console.WriteLine("finished reading call history");
                         Console.WriteLine("saving to db...");
-
                         SaveToDB(phone, contacts, calls, sms);
                         Console.WriteLine("finished saving to db");
                     }
@@ -116,9 +100,87 @@ namespace MobileSpyTest
                         Console.WriteLine("Oops, some error occured: " + ex.Message);
                     }
                 }
+                else if (source is CSource.CSIMCard)
+                {
+                    Console.WriteLine("process device: " + source.Label);
+                    Console.WriteLine("reading file system...");
+                    //string rootFolder = ReadFS(source);
+                    string root = @"G:\data\";
+                    string rootFolder = Path.Combine(root, source.UniqueIdentifier);
+                    Console.WriteLine("finished reading file system");
+                    Console.WriteLine("saving to db...");
+                    SaveToDB(source, rootFolder);
+                    Console.WriteLine("finished saving to db");
+                }
             }
 
             Console.ReadLine();
+        }
+
+        private static string ReadFS(CSource source)
+        {
+            if (source.FileSystem != null)
+            {
+                string root = @"G:\data\";
+                COMlib.CFolder folder = source.FileSystem.RootFolder;
+                folder.Folders.Update();
+                foreach (COMlib.CFolder fld in folder.Folders)
+                {
+                    if (fld.Name == "mnt")
+                    {
+                        // for andriod, only interested in the /mnt folder
+
+                        ReadFolder(fld, Path.Combine(root, source.UniqueIdentifier, fld.Name));
+                    }
+                }
+                return Path.Combine(root, source.UniqueIdentifier);
+            }
+            return null;
+        }
+
+        private static void ReadFolder(COMlib.CFolder folder, string outputPath)
+        {
+            if (folder == null) return;
+
+            if (!Directory.Exists(outputPath))
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+
+            folder.Folders.Update();
+            if (folder.Folders != null)
+            {
+                foreach (COMlib.CFolder fld in folder.Folders)
+                {
+                    ReadFolder(fld, Path.Combine(outputPath, fld.Name));
+                }
+            }
+
+            folder.Files.Update();
+            if (folder.Files != null)
+            {
+                foreach (COMlib.CFile file in folder.Files)
+                {
+                    string filepath = Path.Combine(outputPath, file.Name);
+                    if (File.Exists(filepath))
+                    {
+                        Console.WriteLine(filepath + " already exists, skip");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            using (FileStream fs = new FileStream(filepath, FileMode.CreateNew))
+                            {
+                                file.Download(fs);
+                            }
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                        }
+                    }
+                }
+            }
         }
 
         private static List<Contact> ReadPhoneBook(CSource source)
@@ -189,7 +251,7 @@ namespace MobileSpyTest
 
                 //try
                 //{
-                    phonebook.Entries.Update();
+                phonebook.Entries.Update();
                 //    phonebook.Entries.Push();
                 //}
                 //catch (Exception e)
@@ -274,7 +336,22 @@ namespace MobileSpyTest
             return sms;
         }
 
-        private static void SaveToDB(CSource.CMobilePhone phone_, 
+        private static void SaveToDB(CSource source_, string rootFolder_)
+        {
+            using (DataStore ds = new DataStore())
+            {
+                DeviceInfo devInfo = new DeviceInfo();
+                devInfo.Label = source_.Label;
+                Device dev1 = ds.createDevice(source_.UniqueIdentifier, "simcard", devInfo);
+                if (rootFolder_ != null)
+                {
+                    dDevFileSystem devFS = dev1.createDevFileSystem(rootFolder_);
+                    ds.commit();
+                }
+            }
+        }
+
+        private static void SaveToDB(CSource.CMobilePhone phone_,
             List<Contact> contacts_, List<Call> calls_, List<Sms> sms_)
         {
             using (DataStore ds = new DataStore())
@@ -294,7 +371,7 @@ namespace MobileSpyTest
                 {
                     foreach (var c in calls_)
                     {
-                        dev1.addCall(c.Number, c.Duration, c.Status, c.StartTime, c.StopTime, (int)c.Type);    
+                        dev1.addCall(c.Number, c.Duration, c.Status, c.StartTime, c.StopTime, (int)c.Type);
                     }
                 }
                 if (sms_ != null)

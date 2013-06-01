@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using datasource;
 using System.Threading.Tasks;
 using snake.Model;
+using System.IO;
 
 namespace snake
 {
@@ -147,6 +148,32 @@ namespace snake
                             }
                         }, context);
                     }
+                    else if (item.Name == "lbiFS")
+                    {
+                        var context = TaskScheduler.FromCurrentSynchronizationContext();
+                        string[] roots = null;
+                        Task.Factory.StartNew(() =>
+                        {
+                            roots = _selectedDevice.getFileSystemRoots(session);
+                        }).ContinueWith(_ =>
+                        {
+                            if (roots != null)
+                            {
+                                foreach (var s in roots)
+                                {
+                                    int i = s.IndexOf(_selectedDevice.UID);
+                                    if (i < 0) continue;
+                                    string f = s.Substring(0, i + _selectedDevice.UID.Length);
+                                    var fsItem = new ListBoxItem()
+                                    {
+                                        Content = f,
+                                        Tag = s
+                                    };
+                                    lbItemPreview.Items.Add(fsItem);
+                                }
+                            }
+                        }, context);
+                    }
                 }
             }
         }
@@ -190,6 +217,18 @@ namespace snake
             var importScreen = new Import();
             importScreen.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             importScreen.ShowDialog();
+        }
+
+        private void miFS_Click(object sender, RoutedEventArgs e)
+        {
+            if (lbItemPreview.SelectedIndex >= 0)
+            {
+                string text = ((ListBoxItem)lbItemPreview.SelectedItem).Content.ToString();
+                if (Directory.Exists(text))
+                {
+                    System.Diagnostics.Process.Start(text);
+                }
+            }
         }
     }
 }

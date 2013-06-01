@@ -38,17 +38,24 @@
                         <ListBoxItem Name="lbiPhonebook">电话簿</ListBoxItem>
                         <ListBoxItem Name="lbiCallHistory">通话记录</ListBoxItem>
                         <ListBoxItem Name="lbiSMS">短信</ListBoxItem>
+                        <ListBoxItem Name="lbiFS">文件系统</ListBoxItem>
                     </ListBox>
                 </GroupBox>
             </Grid>
             <Grid Grid.Column="1">
                 <GroupBox Header="所有数据">
-                    <ListBox Name="lbItemPreview" SelectionChanged="lbItemPreview_SelectionChanged" />
+                    <ListBox Name="lbItemPreview" SelectionChanged="lbItemPreview_SelectionChanged" >
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="miFS" Click="miFS_Click">浏览</MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
                 </GroupBox>
             </Grid>
             <Grid Grid.Column="2">
                 <GroupBox Header="详细信息" Name="gbDetails">
-                    
+
                 </GroupBox>
             </Grid>
         </Grid>
