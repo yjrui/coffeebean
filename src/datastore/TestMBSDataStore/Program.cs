@@ -126,6 +126,12 @@ namespace TestMBSDataStore
                             output("SMS.FromNumber=" + sms.FromNumber, depth);
                             output("SMS.Text=" + sms.Text, depth);
                         }
+                        // get filesystem root
+                        String[] fsRoots = device.getFileSystemRoots(session);
+                        foreach (String fsRoot in fsRoots)
+                        {
+                            output("FS Root=" + fsRoot, depth);
+                        }
                         --depth;
                     }
                 }
