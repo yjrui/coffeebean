@@ -39,6 +39,8 @@ namespace TestMBSDataStore
                 String guid1 = "01123304408844223";
                 dDeviceInfo devInfo = new dDeviceInfo();
                 devInfo.Label = "IPHONE 5";
+                devInfo.OwnerName = "Steven";
+                devInfo.OwnerID = "310112345677890x";
                 dDevice dev1 = ds.createDevice(guid1, "phone", devInfo);
                 dDevice dev2 = ds.createDevice(guid1, "phone");
                 devInfo.Label = "GSM";
@@ -132,6 +134,10 @@ namespace TestMBSDataStore
                         {
                             output("FS Root=" + fsRoot, depth);
                         }
+                        // get owner
+                        KeyValuePair<String, String> owner = device.getOwner(session);
+                        output("Owner ID=" + owner.Key, depth);
+                        output("Owner Name=" + owner.Value, depth);
                         --depth;
                     }
                 }

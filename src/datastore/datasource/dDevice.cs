@@ -14,7 +14,8 @@ namespace datasource
         private SortedDictionary<Int64, List<dContact>> m_contacts = new SortedDictionary<Int64, List<dContact>>();
         private SortedDictionary<Int64, List<dSMS>> m_smsList = new SortedDictionary<Int64, List<dSMS>>();
         private SortedDictionary<Int64, List<String>> m_fsRootsList = new SortedDictionary<Int64, List<String>>();
-
+        private SortedDictionary<Int64, KeyValuePair<String, String>> m_ownerList = new SortedDictionary<Int64, KeyValuePair<string, string>>();
+        
         internal dDevice(DataSource ds) { m_ds = ds; }
 
         private mobilespyEntities getDB()
@@ -55,6 +56,9 @@ namespace datasource
             {
                 Session ses = new Session(this);
                 ses.Id = sesEnt.Id;
+                ses.OwnerID = sesEnt.OwnerID;
+                ses.OwnerName = sesEnt.OwnerName;
+                ses.Description = sesEnt.Description;
                 ses.ParentSessionId = sesEnt.ParentSessionId;
                 ses.Timestamp = sesEnt.Timestamp;
                 m_sessions.Add(ses);
@@ -300,6 +304,16 @@ namespace datasource
             }
             m_fsRootsList.Add(ses.Id, fsRoots);
             return fsRoots.ToArray();
+        }
+
+        public KeyValuePair<String, String> getOwner(Session ses)
+        {
+            KeyValuePair<String, String> owner = new KeyValuePair<String, String>("", "");
+            if (ses == null) return owner;
+            if (m_ownerList.TryGetValue(ses.Id, out owner)) return owner;
+            owner = new KeyValuePair<String, String>(ses.OwnerID, ses.OwnerName);
+            m_ownerList.Add(ses.Id, owner);
+            return owner;
         }
     }
 }

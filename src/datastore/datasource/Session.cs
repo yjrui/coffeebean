@@ -12,8 +12,11 @@ namespace datasource
 
         public Int64 Id { get; internal set; }
         public DateTime Timestamp { get; internal set; }
+        public String Description { get; internal set; }
         public dDevice Device() { return m_device; }
         internal Nullable<Int64> ParentSessionId { get; set; }
+        internal String OwnerName{ get; set; }
+        internal String OwnerID { get; set; }
 
         int IComparable<Session>.CompareTo(Session other)
         {

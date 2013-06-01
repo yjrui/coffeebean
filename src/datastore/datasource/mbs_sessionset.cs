@@ -27,6 +27,9 @@ namespace datasource
         public System.DateTime Timestamp { get; set; }
         public string MBS_DeviceUID { get; set; }
         public Nullable<long> ParentSessionId { get; set; }
+        public string OwnerName { get; set; }
+        public string OwnerID { get; set; }
+        public string Description { get; set; }
     
         public virtual ICollection<mbs_callset> mbs_callset { get; set; }
         public virtual ICollection<mbs_contactset> mbs_contactset { get; set; }

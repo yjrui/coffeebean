@@ -93,10 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <EntityDeploy Include="MBSDataSourceModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MBSDataSourceModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="MBSDataSource.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MBSDataSource.Context.cs</LastGenOutput>
@@ -105,6 +101,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MBSDataSource.cs</LastGenOutput>
     </None>
+    <EntityDeploy Include="MBSDataSourceModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MBSDataSourceModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -23,5 +23,8 @@ namespace datastore
         public String ICCID { get; set; }
         public String LAI { get; set; }
         public String Phrase { get; set; }
+        public String OwnerName { get; set; }
+        public String OwnerID { get; set; }
+        public String Description { get; set; }
     }
 }
