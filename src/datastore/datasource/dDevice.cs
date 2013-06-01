@@ -12,7 +12,8 @@ namespace datasource
         private SortedDictionary<Int64, List<dCall>> m_calls = new SortedDictionary<Int64, List<dCall>>();
         private SortedDictionary<Int64, List<Session>> m_assSessions = new SortedDictionary<Int64, List<Session>>();
         private SortedDictionary<Int64, List<dContact>> m_contacts = new SortedDictionary<Int64, List<dContact>>();
-        private SortedDictionary<Int64, List<dSMS>> m_smsList = new SortedDictionary<long, List<dSMS>>();
+        private SortedDictionary<Int64, List<dSMS>> m_smsList = new SortedDictionary<Int64, List<dSMS>>();
+        private SortedDictionary<Int64, List<String>> m_fsRootsList = new SortedDictionary<Int64, List<String>>();
 
         internal dDevice(DataSource ds) { m_ds = ds; }
 
@@ -283,6 +284,22 @@ namespace datasource
                 }
             }
             return retSMSList.ToArray();
+        }
+        public String[] getFileSystemRoots(Session ses)
+        {
+            if (ses == null) return new String[0];
+            List<String> fsRoots = null;
+            if (m_fsRootsList.TryGetValue(ses.Id, out fsRoots)) return fsRoots.ToArray();
+            fsRoots = new List<String>();
+            var result = from r in getDB().mbs_filesystemset
+                         where r.MBS_SessionId == ses.Id
+                         select r.MappingRootPath;
+            foreach (String r in result)
+            {
+                fsRoots.Add(r);
+            }
+            m_fsRootsList.Add(ses.Id, fsRoots);
+            return fsRoots.ToArray();
         }
     }
 }
