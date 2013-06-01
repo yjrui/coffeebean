@@ -5,11 +5,14 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 05/19/2013 21:53:52
--- Generated from EDMX file: C:\Users\Steven\Documents\mobilespy\project\mobilespy\src\datastore\datastore\datastore\MBSDataStoreModel.edmx
+-- Date Created: 06/01/2013 11:12:46
+-- Generated from EDMX file: C:\Users\Steven\Documents\GitHub\coffeebean\src\datastore\datastore\MBSDataStoreModel.edmx
 -- Target version: 2.0.0.0
 -- --------------------------------------------------
 
+DROP DATABASE IF EXISTS `mobilespy`;
+CREATE DATABASE `mobilespy`;
+USE `mobilespy`;
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
@@ -119,7 +122,10 @@ CREATE TABLE `mbs_sessionset`(
 	`Id` bigint NOT NULL AUTO_INCREMENT UNIQUE, 
 	`Timestamp` datetime NOT NULL, 
 	`MBS_DeviceUID` nvarchar (200) NOT NULL, 
-	`ParentSessionId` bigint);
+	`ParentSessionId` bigint, 
+	`OwnerName` nvarchar (1000), 
+	`OwnerID` nvarchar (1000), 
+	`Description` nvarchar (1000));
 
 ALTER TABLE `mbs_sessionset` ADD PRIMARY KEY (Id);
 

@@ -80,7 +80,16 @@ namespace datastore
             }
 
             // add session entity
-            mbs_sessionset sessionEnt = new mbs_sessionset { MBS_DeviceUID = uid, Timestamp = DateTime.Now };
+            mbs_sessionset sessionEnt = new mbs_sessionset { 
+                MBS_DeviceUID = uid, 
+                Timestamp = DateTime.Now
+            };
+            if (devInfo != null)
+            {
+                sessionEnt.Description = devInfo.Description;
+                sessionEnt.OwnerID = devInfo.OwnerID;
+                sessionEnt.OwnerName = devInfo.OwnerName;
+            }
 
             if (parent != null)
             {

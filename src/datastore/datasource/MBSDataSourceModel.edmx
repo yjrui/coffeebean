@@ -114,6 +114,9 @@
     <Property Name="Timestamp" Type="datetime" Nullable="false" />
     <Property Name="MBS_DeviceUID" Type="nvarchar" Nullable="false" MaxLength="200" />
     <Property Name="ParentSessionId" Type="bigint" Nullable="true" />
+    <Property Name="OwnerName" Type="nvarchar" Nullable="true" />
+    <Property Name="OwnerID" Type="nvarchar" Nullable="true" />
+    <Property Name="Description" Type="nvarchar" Nullable="true" />
   </EntityType>
   <EntityType Name="mbs_smsset">
     <Key>
@@ -344,6 +347,9 @@
           <NavigationProperty Name="mbs_sessionset1" Relationship="mobilespyModel.FK_MBS_SessionMBS_Session" FromRole="mbs_sessionset" ToRole="mbs_sessionset1" />
           <NavigationProperty Name="mbs_sessionset2" Relationship="mobilespyModel.FK_MBS_SessionMBS_Session" FromRole="mbs_sessionset1" ToRole="mbs_sessionset" />
           <NavigationProperty Name="mbs_smsset" Relationship="mobilespyModel.FK_MBS_SessionMBS_SMS" FromRole="mbs_sessionset" ToRole="mbs_smsset" />
+          <Property Type="String" Name="OwnerName" Nullable="true" Unicode="true" />
+          <Property Type="String" Name="OwnerID" Nullable="true" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="true" Unicode="true" />
         </EntityType>
         <EntityType Name="mbs_smsset">
           <Key>
@@ -531,6 +537,9 @@
           <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
           <ScalarProperty Name="MBS_DeviceUID" ColumnName="MBS_DeviceUID" />
           <ScalarProperty Name="ParentSessionId" ColumnName="ParentSessionId" />
+          <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -577,17 +586,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="MBSDataStoreModel">
-        <EntityTypeShape EntityType="mobilespyModel.mbs_callset" Width="1.5" PointX="5.375" PointY="1.5" Height="2.7341113281249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_callset" Width="1.5" PointX="5.25" PointY="1.5" Height="2.7341113281249996" IsExpanded="true" />
         <EntityTypeShape EntityType="mobilespyModel.mbs_contactpropertyset" Width="1.5" PointX="7.5" PointY="5" Height="2.3520719401041674" IsExpanded="true" />
         <EntityTypeShape EntityType="mobilespyModel.mbs_contactset" Width="1.5" PointX="5.25" PointY="5" Height="2.1610522460937496" IsExpanded="true" />
         <EntityTypeShape EntityType="mobilespyModel.mbs_deviceset" Width="1.5" PointX="0.75" PointY="5.625" Height="4.6443082682291656" IsExpanded="true" />
         <EntityTypeShape EntityType="mobilespyModel.mbs_filesystemset" Width="1.5" PointX="5.25" PointY="8" Height="1.7790128580729174" IsExpanded="true" />
-        <EntityTypeShape EntityType="mobilespyModel.mbs_sessionset" Width="1.5" PointX="3" PointY="6.375" Height="3.1161507161458308" IsExpanded="true" />
+        <EntityTypeShape EntityType="mobilespyModel.mbs_sessionset" Width="1.5" PointX="3" PointY="6.375" Height="3.6892097981770817" IsExpanded="true" />
         <EntityTypeShape EntityType="mobilespyModel.mbs_smsset" Width="1.5" PointX="5.25" PointY="10.625" Height="3.8802294921874996" IsExpanded="true" />
         <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_Call" ManuallyRouted="false">
           <ConnectorPoint PointX="3.75" PointY="6.375" />
           <ConnectorPoint PointX="3.75" PointY="2.8670556640625" />
-          <ConnectorPoint PointX="5.375" PointY="2.8670556640625" />
+          <ConnectorPoint PointX="5.25" PointY="2.8670556640625" />
         </AssociationConnector>
         <AssociationConnector Association="mobilespyModel.FK_MBS_ContactMBS_ContactProperty" ManuallyRouted="false">
           <ConnectorPoint PointX="6.75" PointY="6.0805261230468748" />
@@ -598,21 +607,21 @@
           <ConnectorPoint PointX="5.25" PointY="6.7680261230468748" />
         </AssociationConnector>
         <AssociationConnector Association="mobilespyModel.FK_MBS_DeviceMBS_Session" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="7.9330753580729159" />
-          <ConnectorPoint PointX="3" PointY="7.9330753580729159" />
+          <ConnectorPoint PointX="2.25" PointY="8.21960489908854" />
+          <ConnectorPoint PointX="3" PointY="8.21960489908854" />
         </AssociationConnector>
         <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_FileSystem" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="8.7455753580729159" />
-          <ConnectorPoint PointX="5.25" PointY="8.7455753580729159" />
+          <ConnectorPoint PointX="4.5" PointY="8.8895064290364587" />
+          <ConnectorPoint PointX="5.25" PointY="8.8895064290364587" />
         </AssociationConnector>
         <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_Session" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.5319230769230767" PointY="9.4911507161458317" />
-          <ConnectorPoint PointX="3.5319230769230767" PointY="9.7411507161458317" />
-          <ConnectorPoint PointX="3.9784615384615383" PointY="9.7411507161458317" />
-          <ConnectorPoint PointX="3.9784615384615383" PointY="9.4911507161458317" />
+          <ConnectorPoint PointX="3.5319230769230767" PointY="10.064209798177082" />
+          <ConnectorPoint PointX="3.5319230769230767" PointY="10.314209798177082" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="10.314209798177082" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="10.064209798177082" />
         </AssociationConnector>
         <AssociationConnector Association="mobilespyModel.FK_MBS_SessionMBS_SMS" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.2347090384615385" PointY="9.4911507161458317" />
+          <ConnectorPoint PointX="3.2347090384615385" PointY="10.064209798177082" />
           <ConnectorPoint PointX="3.2347090384615385" PointY="12.56511474609375" />
           <ConnectorPoint PointX="5.25" PointY="12.56511474609375" />
         </AssociationConnector>
